@@ -49,7 +49,7 @@ export function Contact() {
                   <Mail className="w-6 h-6 text-red-600 mt-1" />
                   <div>
                     <p className="text-gray-400 text-sm">Email</p>
-                    <p className="text-white">contact@iperezstudio.com</p>
+                    <p className="text-white">iperezstudios@gmail.com </p>
                   </div>
                 </div>
 
@@ -57,7 +57,7 @@ export function Contact() {
                   <Phone className="w-6 h-6 text-red-600 mt-1" />
                   <div>
                     <p className="text-gray-400 text-sm">Phone</p>
-                    <p className="text-white">(555) 123-4567</p>
+                    <p className="text-white"> (551)200 0340 </p>
                   </div>
                 </div>
 
@@ -65,7 +65,7 @@ export function Contact() {
                   <MapPin className="w-6 h-6 text-red-600 mt-1" />
                   <div>
                     <p className="text-gray-400 text-sm">Address</p>
-                    <p className="text-white">123 Photography Lane<br />Studio City, CA 90001</p>
+                    <p className="text-white">Port Chester, New York, USA</p>
                   </div>
                 </div>
               </div>
@@ -75,16 +75,7 @@ export function Contact() {
               <h3 className="text-xl font-bold text-white mb-4">Business Hours</h3>
               <div className="space-y-2 text-gray-300">
                 <div className="flex justify-between">
-                  <span>Monday - Friday</span>
-                  <span>9:00 AM - 6:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Saturday</span>
-                  <span>10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday</span>
-                  <span>By Appointment</span>
+                  <span>24h available by appointment at least 3 weeks ahead </span>
                 </div>
               </div>
             </div>
