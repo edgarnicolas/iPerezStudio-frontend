@@ -1,8 +1,6 @@
 
   # Photography Business Web Page
 
-  This is a code bundle for Photography Business Web Page. The original project is available at https://www.figma.com/design/isxMAumSquF3TnjpYwyO22/Photography-Business-Web-Page.
-
   ## Running the code
 
   Run `npm i` to install the dependencies.
