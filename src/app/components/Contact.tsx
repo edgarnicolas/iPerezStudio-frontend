@@ -1,0 +1,167 @@
+import { Mail, Phone, MapPin } from 'lucide-react';
+import { useState } from 'react';
+
+export function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Mock form submission
+    alert('Message sent! We will get back to you soon.');
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  return (
+    <section id="contact" className="min-h-screen bg-black py-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Get in <span className="text-red-600">Touch</span>
+          </h2>
+          <p className="text-gray-300 text-lg">We'd love to hear from you</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Contact Information */}
+          <div className="space-y-6">
+            <div className="bg-gray-900 rounded-lg p-6 border border-red-600/30">
+              <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4">
+                  <Mail className="w-6 h-6 text-red-600 mt-1" />
+                  <div>
+                    <p className="text-gray-400 text-sm">Email</p>
+                    <p className="text-white">contact@iperezstudio.com</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <Phone className="w-6 h-6 text-red-600 mt-1" />
+                  <div>
+                    <p className="text-gray-400 text-sm">Phone</p>
+                    <p className="text-white">(555) 123-4567</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <MapPin className="w-6 h-6 text-red-600 mt-1" />
+                  <div>
+                    <p className="text-gray-400 text-sm">Address</p>
+                    <p className="text-white">123 Photography Lane<br />Studio City, CA 90001</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-900 rounded-lg p-6 border border-red-600/30">
+              <h3 className="text-xl font-bold text-white mb-4">Business Hours</h3>
+              <div className="space-y-2 text-gray-300">
+                <div className="flex justify-between">
+                  <span>Monday - Friday</span>
+                  <span>9:00 AM - 6:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Saturday</span>
+                  <span>10:00 AM - 4:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Sunday</span>
+                  <span>By Appointment</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="bg-gray-900 rounded-lg p-6 border border-red-600/30">
+            <h3 className="text-2xl font-bold text-white mb-6">Send us a Message</h3>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-gray-300 mb-2">Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your name"
+                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 mb-2">Email *</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="your@email.com"
+                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 mb-2">Subject *</label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder="Message subject"
+                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 mb-2">Message *</label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Your message..."
+                  rows={5}
+                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600 resize-none"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-16 text-center text-gray-400">
+        <p>&copy; 2026 iPerezStudio. All rights reserved.</p>
+      </div>
+    </section>
+  );
+}
