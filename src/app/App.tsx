@@ -1,9 +1,9 @@
-import { Navigation } from './components/Navigation';
-import { Hero } from './components/Hero';
-import { Gallery } from './components/Gallery';
-import { YourPhotos } from './components/YourPhotos';
-import { Book } from './components/Book';
-import { Contact } from './components/Contact';
+import { Navigation } from './components/layout/Navigation';
+import { Hero } from './components/sections/Hero';
+import { Gallery } from './components/sections/Gallery';
+import { YourPhotos } from './components/sections/YourPhotos';
+import { Book } from './components/sections/Book';
+import { Contact } from './components/sections/Contact';
 
 export default function App() {
   return (
