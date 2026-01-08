@@ -18,8 +18,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2 cursor-pointer" onClick={() => scrollToSection('home')}>
-            <Camera className="w-8 h-8 text-red-600" />
-            <span className="text-2xl font-bold text-white">iPerez<span className="text-red-600">Studio</span></span>
+            <img src="src/assets/images/logo-ips.png" alt="iPerezStudioLogo" className="mx-auto w-30 h-20" />
           </div>
 
           {/* Desktop Menu */}
