@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import EmailJS from '@emailjs/browser';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -9,16 +10,35 @@ export function Contact() {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  //credencials for emailjs
+  const SERVICE_ID = 'service_96zq3ok';
+  const TEMPLATE_ID = 'template_dsuty2p';
+  const PUBLIC_KEY = '3F_6ADD2k8F09BOtp';
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock form submission
-    alert('Message sent! We will get back to you soon.');
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
+    
+    try{
+      await EmailJS.sendForm(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        formRef.current!,
+        PUBLIC_KEY
+      );
+      
+      alert('Your message has been sent successfully!');
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    }catch (error) {
+      alert('There was an error sending your message. Please try again later.');
+      console.error('Error sending email:', error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -85,7 +105,7 @@ export function Contact() {
           <div className="bg-gray-900 rounded-lg p-6 border border-red-600/30">
             <h3 className="text-2xl font-bold text-white mb-6">Send us a Message</h3>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-gray-300 mb-2">Name *</label>
                 <input
