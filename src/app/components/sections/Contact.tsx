@@ -2,7 +2,6 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 import { useRef, useState } from 'react';
 import EmailJS from '@emailjs/browser';
 
-
 export function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -12,7 +11,8 @@ export function Contact() {
   });
 
   const [isSending, setIsSending] = useState(false);
-
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  
   const formRef = useRef<HTMLFormElement>(null);
 
   //credencials for emailjs
@@ -23,17 +23,26 @@ export function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    try{
-      if (isSending) return; // Prevent multiple submissions
+    if (isSending) return; // Prevent multiple submissions
+
+      if (!formRef.current) {
+        setStatus('error');
+        return;
+      }
+
       setIsSending(true);
+      setStatus('sending');
+
+    try{
+      
       await EmailJS.sendForm(
         SERVICE_ID,
         TEMPLATE_ID,
-        formRef.current!,
+        formRef.current,
         PUBLIC_KEY
       );
       
-      alert('Your message has been sent successfully!');
+      setStatus('success');
       setFormData({
         name: '',
         email: '',
@@ -42,7 +51,7 @@ export function Contact() {
       });
 
     }catch (error) {
-      alert(`There was an error sending your message. Please try again later. ${error}`);
+      setStatus('error');
       console.error('Error sending email:', error);
     } finally {
       setIsSending(false);
@@ -175,6 +184,12 @@ export function Contact() {
                 {isSending ? 'Sending...' : 'Send Message'}
               </button>
             </form>
+            {status === 'success' && ( 
+              <p className="mt-4 text-green-500">Your message has been sent successfully!</p>
+            )}
+            {status === 'error' && (
+              <p className="mt-4 text-red-500">There was an error sending your message. Please try again later.</p>
+            )}
           </div>
         </div>
       </div>
