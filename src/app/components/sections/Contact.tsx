@@ -2,6 +2,7 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 import { useRef, useState } from 'react';
 import EmailJS from '@emailjs/browser';
 
+
 export function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -10,17 +11,21 @@ export function Contact() {
     message: ''
   });
 
+  const [isSending, setIsSending] = useState(false);
+
   const formRef = useRef<HTMLFormElement>(null);
 
   //credencials for emailjs
-  const SERVICE_ID = 'service_96zq3ok';
-  const TEMPLATE_ID = 'template_dsuty2p';
-  const PUBLIC_KEY = '3F_6ADD2k8F09BOtp';
+  const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try{
+      if (isSending) return; // Prevent multiple submissions
+      setIsSending(true);
       await EmailJS.sendForm(
         SERVICE_ID,
         TEMPLATE_ID,
@@ -35,9 +40,12 @@ export function Contact() {
         subject: '',
         message: ''
       });
+
     }catch (error) {
-      alert('There was an error sending your message. Please try again later.');
+      alert(`There was an error sending your message. Please try again later. ${error}`);
       console.error('Error sending email:', error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -59,6 +67,7 @@ export function Contact() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
+          
           {/* Contact Information */}
           <div className="space-y-6">
             <div className="bg-gray-900 rounded-lg p-6 border border-red-600/30">
@@ -159,10 +168,11 @@ export function Contact() {
               </div>
 
               <button
+                disabled={isSending}
                 type="submit"
                 className="w-full px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                Send Message
+                {isSending ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
