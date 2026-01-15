@@ -145,6 +145,12 @@ export function Book() {
                   type="date"
                   name="preferredDate"
                   value={formData.preferredDate}
+                  //add min of three weeks from today
+                  min={new Date(
+                    Date.now() + 21 * 24 * 60 * 60 * 1000
+                  )
+                    .toISOString()
+                    .split("T")[0]}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-red-600"
                   required
