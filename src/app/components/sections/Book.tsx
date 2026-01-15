@@ -1,34 +1,76 @@
-import { useState } from 'react';
-import { Calendar, Camera } from 'lucide-react';
+import { useRef, useState } from "react";
+import { Calendar, Camera } from "lucide-react";
+import EmailJS from "@emailjs/browser";
 
 export function Book() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    date: '',
-    sessionType: '',
-    message: ''
+    name: "",
+    email: "",
+    phoneNumber: "",
+    preferredDate: "",
+    sessionType: "",
+    additionalDetails: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  //credentials for emailjs or any other service can be added here
+  const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const BOOKING_TEMPLATE = import.meta.env.VITE_EMAILJS_BOOKING_TEMPLATE_ID;
+  const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock form submission
-    alert('Booking request submitted! We will contact you shortly.');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      date: '',
-      sessionType: '',
-      message: ''
-    });
+
+    if (isSubmitting) return; // Prevent multiple submissions
+
+    if (!formRef.current) {
+      setStatus("error");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setStatus("submitting");
+
+    try {
+      //EmailJS sending logic would go here
+      await EmailJS.sendForm(
+        SERVICE_ID,
+        BOOKING_TEMPLATE,
+        formRef.current!,
+        PUBLIC_KEY
+      );
+
+      // Here you would integrate with EmailJS or another email service
+      setStatus("success");
+      setFormData({
+        name: "",
+        email: "",
+        phoneNumber: "",
+        preferredDate: "",
+        sessionType: "",
+        additionalDetails: "",
+      });
+    } catch (error) {
+      setStatus("error");
+      console.error("Error submitting booking request:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -39,7 +81,9 @@ export function Book() {
           <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
             Book a <span className="text-red-600">Session</span>
           </h2>
-          <p className="text-gray-600 text-lg">Reserve your photography session today</p>
+          <p className="text-gray-600 text-lg">
+            Reserve your photography session today
+          </p>
         </div>
 
         <div className="bg-gray-50 rounded-lg p-8 border-2 border-red-600/20">
@@ -50,7 +94,7 @@ export function Book() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 mb-2">Full Name *</label>
@@ -72,18 +116,20 @@ export function Book() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="john@example.com"
+                  placeholder="your@example.com"
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-red-600"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 mb-2">Phone Number *</label>
+                <label className="block text-gray-700 mb-2">
+                  Phone Number *
+                </label>
                 <input
                   type="tel"
-                  name="phone"
-                  value={formData.phone}
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
                   onChange={handleChange}
                   placeholder="(555) 123-4567"
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-red-600"
@@ -92,11 +138,13 @@ export function Book() {
               </div>
 
               <div>
-                <label className="block text-gray-700 mb-2">Preferred Date *</label>
+                <label className="block text-gray-700 mb-2">
+                  Preferred Date *
+                </label>
                 <input
                   type="date"
-                  name="date"
-                  value={formData.date}
+                  name="preferredDate"
+                  value={formData.preferredDate}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-red-600"
                   required
@@ -124,10 +172,12 @@ export function Book() {
             </div>
 
             <div>
-              <label className="block text-gray-700 mb-2">Additional Details</label>
+              <label className="block text-gray-700 mb-2">
+                Additional Details
+              </label>
               <textarea
-                name="message"
-                value={formData.message}
+                name="additionalDetails"
+                value={formData.additionalDetails}
                 onChange={handleChange}
                 placeholder="Tell us about your vision for the session..."
                 rows={4}
@@ -136,17 +186,32 @@ export function Book() {
             </div>
 
             <button
+              disabled={isSubmitting}
               type="submit"
               className="w-full px-8 py-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-lg font-semibold"
             >
-              Submit Booking Request
+              {isSubmitting ? "Submitting..." : "Submit Booking Request"}
             </button>
           </form>
+         
 
           <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-sm text-gray-700">
-              <strong>Note:</strong> Submitting this form is a booking request. We will contact you within 24 hours to confirm availability and discuss session details.
+              <strong>Note:</strong> Submitting this form is a booking request.
+              We will contact you within 24 hours to confirm availability and
+              discuss session details.
             </p>
+            {status === "success" && (
+            <p className="mt-4 text-green-600 font-medium">
+              Your booking request has been submitted successfully!
+            </p>
+          )}
+          {status === "error" && (
+            <p className="mt-4 text-red-600 font-medium">
+              There was an error submitting your booking request. Please try
+              again later.
+            </p>
+          )}
           </div>
         </div>
       </div>
