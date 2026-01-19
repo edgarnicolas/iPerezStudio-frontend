@@ -1,93 +1,78 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
+import {InstagramEmbed} from 'react-social-media-embed';
+import { ExternalLink } from 'lucide-react';
 
-const galleryImages = [
-  {
-    id: 1,
-    url: 'https://images.unsplash.com/photo-1532272278764-53cd1fe53f72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMHBob3RvZ3JhcGh5JTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc2NzY2ODk5OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    category: 'Portrait'
-  },
-  {
-    id: 2,
-    url: 'https://images.unsplash.com/photo-1647730346059-c7c75506451e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwcGhvdG9ncmFwaHklMjBjb3VwbGV8ZW58MXx8fHwxNzY3NjQ4ODAyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    category: 'Wedding'
-  },
-  {
-    id: 3,
-    url: 'https://images.unsplash.com/photo-1648046016726-9260b555902b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwcGhvdG9ncmFwaHklMjBtb2RlbHxlbnwxfHx8fDE3Njc1OTMxNDh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    category: 'Fashion'
-  },
-  {
-    id: 4,
-    url: 'https://images.unsplash.com/photo-1614607653708-0777e6d003b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxldmVudCUyMHBob3RvZ3JhcGh5fGVufDF8fHx8MTc2NzYyMDUxNXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    category: 'Events'
-  },
-  {
-    id: 5,
-    url: 'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdHVkaW8lMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3Njc2NjMzODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    category: 'Studio'
-  },
-  {
-    id: 6,
-    url: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdHxlbnwxfHx8fDE3Njc1OTQzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    category: 'Headshots'
-  }
+const instagramPosts = [
+'https://www.instagram.com/p/DKhSebRxMxf/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+'https://www.instagram.com/p/COaTnMiLNme/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+'https://www.instagram.com/p/Cu9eC2drwMN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+'https://www.instagram.com/p/C9K2XmzPddi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+'https://www.instagram.com/reel/DOlP-xJEVd3/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+'https://www.instagram.com/p/DR5edXaAXAv/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
 ];
 
 export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   return (
-    <section id="gallery" className="min-h-screen bg-white py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
-            Our <span className="text-red-600">Gallery</span>
+    <section id="gallery" className="min-h-screen bg-black py-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Portfolio <span className="text-red-600">Gallery</span>
           </h2>
-          <p className="text-gray-600 text-lg">Explore our portfolio of stunning photography</p>
+          <p className="text-gray-300 text-xl mb-4">
+            Mis trabajos más recientes
+          </p>
+          <a 
+            href="https://www.instagram.com/iperezstudios/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center space-x-2 text-red-600 hover:text-red-400 text-lg font-semibold transition-colors"
+          >
+            <span>Ver todo en Instagram</span>
+            <ExternalLink className="w-5 h-5" />
+          </a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {galleryImages.map((image) => (
+        {/* Grid responsive 1col-mobile → 3col-desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {instagramPosts.map((url, index) => (
             <div 
-              key={image.id}
-              className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square"
-              onClick={() => setSelectedImage(image.id)}
+              key={index} 
+              className="group relative overflow-hidden rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300"
             >
-              <img 
-                src={image.url} 
-                alt={image.category}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              <InstagramEmbed 
+                url={url} 
+                width="100%" 
+                height={320}
+                className="group-hover:scale-[1.02] transition-transform duration-300"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-4 left-4 text-white">
-                  <p className="text-xl font-bold">{image.category}</p>
-                </div>
-              </div>
+              {/* Overlay con link */}
+              <a 
+                href={url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="absolute inset-0 bg-black/20 group-hover:bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center"
+              >
+                <ExternalLink className="w-8 h-8 text-white" />
+              </a>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Lightbox */}
-      {selectedImage !== null && (
-        <div 
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <button 
-            className="absolute top-4 right-4 text-white hover:text-red-600 transition-colors"
-            onClick={() => setSelectedImage(null)}
+        {/* CTA */}
+        <div className="text-center mt-20">
+          <a 
+            href="#book" 
+            className="inline-block px-12 py-4 bg-red-600 text-white rounded-lg text-xl font-bold hover:bg-red-700 transition-colors"
           >
-            <X className="w-8 h-8" />
-          </button>
-          <img 
-            src={galleryImages.find(img => img.id === selectedImage)?.url}
-            alt="Selected"
-            className="max-w-full max-h-full object-contain"
-          />
+            Reserva tu sesión
+          </a>
         </div>
-      )}
+      </div>
     </section>
   );
+
 }
