@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Camera, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import logo from '@/assets/images/logo.png';
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,7 +19,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2 cursor-pointer" onClick={() => scrollToSection('home')}>
-            <img src="src/assets/images/logo.png" alt="iPerezStudioLogo" className="mx-auto w-30 h-20" />
+            <img src={logo} alt="logo" className="mx-auto w-30 h-20" />
           </div>
 
           {/* Desktop Menu */}
