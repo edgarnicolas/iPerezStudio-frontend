@@ -20,10 +20,10 @@ export function Gallery() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Portfolio <span className="text-red-600">Gallery</span>
+            <span className="text-red-600">Gallery</span>
           </h2>
           <p className="text-gray-300 text-xl mb-4">
-            Mis trabajos más recientes
+            Latest posts from Instagram
           </p>
           <a 
             href="https://www.instagram.com/iperezstudios/" 
