@@ -1,4 +1,5 @@
 import { Camera, Image } from 'lucide-react';
+import logo from '@/assets/images/logo.png';
 
 export function Hero() {
   const scrollToBook = () => {
@@ -22,7 +23,7 @@ export function Hero() {
       <div className="relative z-10 text-center px-4">
 
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-          <img src="src/assets/images/logo.png" alt="iPerezlogo" className="mx-auto w-64 md:w-80" />
+          <img src={logo} alt="iPerezlogo" className="mx-auto w-64 md:w-80" />
         </h1>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
