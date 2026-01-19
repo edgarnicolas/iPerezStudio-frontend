@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import EmailJS from '@emailjs/browser';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -9,16 +10,52 @@ export function Contact() {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  
+  const formRef = useRef<HTMLFormElement>(null);
+
+  //credencials for emailjs
+  const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock form submission
-    alert('Message sent! We will get back to you soon.');
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
+    
+    if (isSending) return; // Prevent multiple submissions
+
+      if (!formRef.current) {
+        setStatus('error');
+        return;
+      }
+
+      setIsSending(true);
+      setStatus('sending');
+
+    try{
+      
+      await EmailJS.sendForm(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        formRef.current,
+        PUBLIC_KEY
+      );
+      
+      setStatus('success');
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+
+    }catch (error) {
+      setStatus('error');
+      console.error('Error sending email:', error);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,6 +76,7 @@ export function Contact() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
+          
           {/* Contact Information */}
           <div className="space-y-6">
             <div className="bg-gray-900 rounded-lg p-6 border border-red-600/30">
@@ -49,7 +87,7 @@ export function Contact() {
                   <Mail className="w-6 h-6 text-red-600 mt-1" />
                   <div>
                     <p className="text-gray-400 text-sm">Email</p>
-                    <p className="text-white">contact@iperezstudio.com</p>
+                    <p className="text-white">iperezstudios@gmail.com </p>
                   </div>
                 </div>
 
@@ -57,7 +95,7 @@ export function Contact() {
                   <Phone className="w-6 h-6 text-red-600 mt-1" />
                   <div>
                     <p className="text-gray-400 text-sm">Phone</p>
-                    <p className="text-white">(555) 123-4567</p>
+                    <p className="text-white"> (551)200 0340 </p>
                   </div>
                 </div>
 
@@ -65,7 +103,7 @@ export function Contact() {
                   <MapPin className="w-6 h-6 text-red-600 mt-1" />
                   <div>
                     <p className="text-gray-400 text-sm">Address</p>
-                    <p className="text-white">123 Photography Lane<br />Studio City, CA 90001</p>
+                    <p className="text-white">Port Chester, New York, USA</p>
                   </div>
                 </div>
               </div>
@@ -75,16 +113,7 @@ export function Contact() {
               <h3 className="text-xl font-bold text-white mb-4">Business Hours</h3>
               <div className="space-y-2 text-gray-300">
                 <div className="flex justify-between">
-                  <span>Monday - Friday</span>
-                  <span>9:00 AM - 6:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Saturday</span>
-                  <span>10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday</span>
-                  <span>By Appointment</span>
+                  <span>24h available by appointment at least 3 weeks ahead </span>
                 </div>
               </div>
             </div>
@@ -94,7 +123,7 @@ export function Contact() {
           <div className="bg-gray-900 rounded-lg p-6 border border-red-600/30">
             <h3 className="text-2xl font-bold text-white mb-6">Send us a Message</h3>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-gray-300 mb-2">Name *</label>
                 <input
@@ -148,12 +177,19 @@ export function Contact() {
               </div>
 
               <button
+                disabled={isSending}
                 type="submit"
                 className="w-full px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
               >
-                Send Message
+                {isSending ? 'Sending...' : 'Send Message'}
               </button>
             </form>
+            {status === 'success' && ( 
+              <p className="mt-4 text-green-500">Your message has been sent successfully!</p>
+            )}
+            {status === 'error' && (
+              <p className="mt-4 text-red-500">There was an error sending your message. Please try again later.</p>
+            )}
           </div>
         </div>
       </div>
