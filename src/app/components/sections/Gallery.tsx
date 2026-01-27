@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 import {InstagramEmbed} from 'react-social-media-embed';
 import { ExternalLink } from 'lucide-react';
+import { Book } from './Book';
 
 const instagramPosts = [
 'https://www.instagram.com/p/DKhSebRxMxf/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
@@ -31,7 +32,7 @@ export function Gallery() {
             rel="noopener noreferrer"
             className="inline-flex items-center space-x-2 text-red-600 hover:text-red-400 text-lg font-semibold transition-colors"
           >
-            <span>Ver todo en Instagram</span>
+            <span>Instagram</span>
             <ExternalLink className="w-5 h-5" />
           </a>
         </div>
@@ -68,7 +69,7 @@ export function Gallery() {
             href="#book" 
             className="inline-block px-12 py-4 bg-red-600 text-white rounded-lg text-xl font-bold hover:bg-red-700 transition-colors"
           >
-            Reserva tu sesión
+            Book Your Session Now
           </a>
         </div>
       </div>
