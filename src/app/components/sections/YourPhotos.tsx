@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Image, Lock } from 'lucide-react';
+import {supabase} from '../../../lib/supabase';
 
 /*
 Tipo de una galeria privada donde los usuarios pueden acceder a sus fotos 
@@ -20,24 +21,22 @@ export function YourPhotos() {
     setError('');
 
     try{
-      const res = await fetch('/galleries.json');
+      
+      const { data, error } = await supabase
+        .from('galleries')
+        .select('name, url')
+        .eq('code', accessCode.trim())
+        .single();
 
-      if(!res.ok){
-        throw new Error('Failed to load galleries');
-      }
-
-      const galleries: Record<string, Gallery> = await res.json();
-
-      const normalizedCode = accessCode.trim().toUpperCase();
-
-      const foundGallery = galleries[normalizedCode];
-
-      if(!foundGallery){
-        setError('Invalid access code. Please try again.');
+      if (error || !data) {
+        setError('Invalid access code.');
         return;
       }
 
-      setGallery(foundGallery);
+       setGallery({
+        name: data.name,
+        url: data.url,
+      });
 
     }catch (error) {
       console.error('Error fetching galleries:', error);
